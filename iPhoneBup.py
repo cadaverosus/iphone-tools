@@ -36,6 +36,7 @@ import re
 import os
 import platform
 import shutil
+import time
 
 """
   User defined variables
@@ -136,13 +137,16 @@ def backupFileCopy(hash, name, file, dumpDir=outputDir):
             os.makedirs(DIR)
         if (os.path.exists(src)):
             if (os.path.exists(dest)):
-                print('>>> skipping ' + dest)
+                if (os.path.getsize(src) != os.path.getsize(dest)):
+                print('>>> skipping duplicate ' + dest)
             else:
                 print ">>> copying " + dest
                 shutil.copyfile(src, dest)
         else:
-            print('HALP')
+            print('HALP no src')
             sys.exit(1)
+
+
 """
   We scan through hashes and copy to file system if necessary
 """
