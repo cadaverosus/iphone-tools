@@ -121,8 +121,8 @@ def backupFromDatabase(file):
 
 
 def backupFileCopy(hash, name, file, dumpDir=outputDir):
-    dest = os.path.join(os.getcwd(), dumpDir)
-    # dest = "./" + dumpDir
+    src = os.path.join(os.path.split(file)[0], hash)
+    dest = os.path.join(os.getcwd(), dumpDir, src.split('/')[1])
 
     for p in name.split("/"):
         dest = os.path.join(dest, p)
@@ -134,17 +134,15 @@ def backupFileCopy(hash, name, file, dumpDir=outputDir):
             os.stat(DIR)
         except:
             os.makedirs(DIR)
-        src = os.path.join(os.path.split(file)[0], hash)
         if (os.path.exists(src)):
             if (os.path.exists(dest)):
-                if (os.path.getsize(src) > os.path.getsize(dest)):
-                    print ">>> src > dest so copying " + dest
-                    shutil.copyfile(src, dest)
+                print('>>> skipping ' + dest)
             else:
-                print ">>> dest doesn't exist, so copying " + src + "->" + dest
+                print ">>> copying " + dest
                 shutil.copyfile(src, dest)
-
-
+        else:
+            print('HALP')
+            sys.exit(1)
 """
   We scan through hashes and copy to file system if necessary
 """
